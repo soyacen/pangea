@@ -19,6 +19,9 @@ func (Handler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 }
 
 func main() {
+
+	app := pangea.Application{}
+
 	server := http.Server{
 		Addr:    ":8080",
 		Handler: &Handler{},
