@@ -11,14 +11,17 @@ type Handler struct {
 }
 
 func (Handler) ServeHTTP(response http.ResponseWriter, request *http.Request) {
-	res := &pangea.Response{OriginRes: response}
-	req := &pangea.Request{OriginReq: request}
-	//panic("implement me")
+	res := pangea.NewResponse(response)
+	req := pangea.NewRequest(request)
 	log.Println(req.OriginReq.RequestURI)
 	res.OriginRes.WriteHeader(200)
 	fmt.Println(res.OriginRes.Write([]byte("hello")))
 }
 
 func main() {
-	log.Fatal(http.ListenAndServe(":8080", &Handler{}))
+	server := http.Server{
+		Addr:    ":8080",
+		Handler: &Handler{},
+	}
+	log.Fatal(server.ListenAndServe())
 }
